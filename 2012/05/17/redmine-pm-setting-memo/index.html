@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Redmine.pm設定メモ | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="RedmineのアカウントでSubversionのBasic認証を行う設定のメモCentOS6.2(64ビット版)と、Redmine1.2.0で検証。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redmine.pm設定メモ">
+<meta property="og:url" content="http://yoursite.com/2012/05/17/redmine-pm-setting-memo/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="RedmineのアカウントでSubversionのBasic認証を行う設定のメモCentOS6.2(64ビット版)と、Redmine1.2.0で検証。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-10T01:33:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redmine.pm設定メモ">
+<meta name="twitter:description" content="RedmineのアカウントでSubversionのBasic認証を行う設定のメモCentOS6.2(64ビット版)と、Redmine1.2.0で検証。">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-redmine-pm-setting-memo" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2012/05/17/redmine-pm-setting-memo/" class="article-date">
+  <time datetime="2012-05-17T12:57:00.000Z" itemprop="datePublished">2012-05-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/redmine/">redmine</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Redmine.pm設定メモ
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>RedmineのアカウントでSubversionのBasic認証を行う設定のメモ<br><br>CentOS6.2(64ビット版)と、Redmine1.2.0で検証。<br></p>
+<a id="more"></a>
+<h3 id="SELinuxの設定変更"><a href="#SELinuxの設定変更" class="headerlink" title="SELinuxの設定変更"></a>SELinuxの設定変更</h3><p>enforcingになってたらpermissiveに変更。<br><br>(enforcingのままだとapacheからmysqlに接続できない）<br></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getenforce</span><br></pre></td></tr></table></figure>
+<p>を実行後<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Enforcing</span><br></pre></td></tr></table></figure></p>
+<p>と出力される場合、<br>Permissiveを設定する。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">setenforce Permissive</span><br><span class="line">getenforce</span><br></pre></td></tr></table></figure></p>
+<p>を実行後<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Permissive</span><br></pre></td></tr></table></figure></p>
+<p>と表示されるようにする<br></p>
+<p>さらに、次回からPermissiveになるように、設定ファイルを変更する<br><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/selinux/config</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># SELINUX=enforcing</span><br><span class="line">SELINUX=permissive</span><br></pre></td></tr></table></figure>
+<h3 id="Redmine-pmをインストール"><a href="#Redmine-pmをインストール" class="headerlink" title="Redmine.pmをインストール"></a>Redmine.pmをインストール</h3><p>次に、SubversionとRedmineの連携部分を設定していきます。<br></p>
+<p>SubversionとApache用SVNモジュールをインストールします。<br><br>(mod_dav_svnをインストールすることで、apacheもインストールされます）<br></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install subversion mod_dav_svn</span><br></pre></td></tr></table></figure>
+<p>Redmine.pmを動かすために必要なperlモジュールをダウンロードします。<br><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install mod_perl perl-Digest-SHA1 perl-DBI perl-DBD-mysql</span><br></pre></td></tr></table></figure></p>
+<p>RedmineでLDAP認証を使っている場合はperl-LDAPと、cpanでAuthen::Simple::LDAPをインストールします。<br></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum install perl-LDAP</span><br><span class="line">yum install gcc gcc-c++ make</span><br><span class="line">yum install zlib-devel curl-devel openssl-devel httpd-devel apr-devel apr-util-devel httpd-devel mod_perl-devel</span><br><span class="line">yum install perl-CPAN</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cpan</span><br><span class="line">cpan&gt; install Authen::Simple::LDAP</span><br></pre></td></tr></table></figure>
+<p>Redmineのリポジトリから、<br><br>RedmineとSVNを連携させるためのモジュールをダウンロードします。<br><br>ダウンロードしたモジュールはapache用のperlモジュール用ディレクトリ配下に置きます。<br></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install wget</span><br><span class="line">wget http://redmine.rubyforge.org/svn/trunk/extra/svn/Redmine.pm</span><br></pre></td></tr></table></figure>
+<p>ディレクトリを作成し、モジュールをコピー<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir /usr/lib64/perl5/Apache</span><br><span class="line">mkdir /usr/lib64/perl5/Apache/Authn</span><br><span class="line">mv Redmine.pm /usr/lib64/perl5/Apache/Authn/.</span><br></pre></td></tr></table></figure></p>
+<p>Redmine.pmを使用した認証の設定と、Subversionの設定を作成<br></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/httpd/conf.d/redmine_svn.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">PerlLoadModule Apache::Authn::Redmine</span><br><span class="line">PerlLoadModule Authen::Simple::LDAP # LDAP認証を使用していない場合は不要</span><br><span class="line">&lt;Location /svn&gt;</span><br><span class="line">     DAV svn</span><br><span class="line">     SVNParentPath &quot;/var/www/svn&quot;</span><br><span class="line"></span><br><span class="line">     AuthType Basic</span><br><span class="line">     AuthName Subversion</span><br><span class="line">     Require valid-user</span><br><span class="line"></span><br><span class="line">     PerlAccessHandler Apache::Authn::Redmine::access_handler</span><br><span class="line">     PerlAuthenHandler Apache::Authn::Redmine::authen_handler</span><br><span class="line"></span><br><span class="line">     # RedmineのDBの接続情報</span><br><span class="line">     RedmineDSN &quot;DBI:mysql:database=redmine_db;host=192.168.1.xxx&quot;</span><br><span class="line"></span><br><span class="line">     RedmineDbUser &quot;redmine_read&quot; # RedmineのDBのユーザー</span><br><span class="line">     RedmineDbPass &quot;password&quot;     # RedmineのDBのパスワード</span><br><span class="line">     RedmineCacheCredsMax 50</span><br><span class="line">&lt;/Location&gt;</span><br></pre></td></tr></table></figure>
+<p>Subversion用ディレクトリを作成します<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir /var/www/svn</span><br><span class="line">chown -R apache:apache /var/www/svn</span><br></pre></td></tr></table></figure></p>
+<h3 id="動作確認"><a href="#動作確認" class="headerlink" title="動作確認"></a>動作確認</h3><p>テスト用のリポジトリを作成します。<br><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svnadmin create /var/www/svn/test</span><br></pre></td></tr></table></figure></p>
+<p>プロジェクトを作成し、プロジェクトの識別子はリポジトリと同じく<br><br>test<br><br>とします。</p>
+<p>プロジェクトにメンバーを追加し、<br><br><a href="http://SubversionのIP(もしくはホスト名)/svn/test" target="_blank" rel="noopener">http://SubversionのIP(もしくはホスト名)/svn/test</a><br><br>にアクセスし、Basic認証のプロンプトにRedmineのID・パスワードで認証が成功するか確認します。<br></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2012/05/17/redmine-pm-setting-memo/" data-id="cjgzu7b6n0004oezr6wjot45r" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2012/05/21/the-memo-for-ruby-debug-installation/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          ruby-debugインストール用メモ
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2012/05/16/how-to-install-nginx-and-jenkins-in-ubuntu12-04-64bit/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Ubuntu12.04(64bit)にnginxとjenkinsを入れてみた</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/aws/">aws</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/cocoapods/">cocoapods</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/emacs/">emacs</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gitlab/">gitlab</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hiroshima-rb/">hiroshima.rb</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jenkins/">jenkins</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/redmine/">redmine</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ruby/">ruby</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/rubymotion/">rubymotion</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vagrant/">vagrant</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/zabbix/">zabbix</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/05/">May 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/12/">December 2011</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2014/01/12/how-to-install-zabbix-in-ubuntu-13-04-64bit/">Zabbix Server2.2.1をUbuntu13.10にインストールする方法</a>
+          </li>
+        
+          <li>
+            <a href="/2014/01/08/migration-to-el-get/">Emacsのパッケージ管理をel-getに移行しました</a>
+          </li>
+        
+          <li>
+            <a href="/2013/11/02/hiroshima-rb-35-chef/">広島Ruby勉強会#35 - Chefについて話しました</a>
+          </li>
+        
+          <li>
+            <a href="/2013/07/24/development-environment-of-redmine-plugin/">Redmineプラグインの開発環境を作成</a>
+          </li>
+        
+          <li>
+            <a href="/2013/07/18/using-joybox-in-rubymotion/">rubymotionでjoyboxを使ってみた</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

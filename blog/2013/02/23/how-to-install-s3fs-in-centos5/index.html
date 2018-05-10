@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>CentOS5.8にs3fsをインストールする方法 | Ogalog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="S3をCentOSからファイルシステムっぽく使えないだろうか。そんな事を考えつつ色々探していてたらs3fsというのを見つけました。 やったこと FUSEをインストール s3fsのコンパイルに必要なパッケージをyumでインストール s3fsをインストール S3にバケットを作成 IAMでs3用のユーザー作成 S3のバケットをマウント  事前に必要なものgit,make,gcc-c++が必要なので、事前">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS5.8にs3fsをインストールする方法">
+<meta property="og:url" content="http://blog.ogatomo.com/blog/2013/02/23/how-to-install-s3fs-in-centos5/index.html">
+<meta property="og:site_name" content="Ogalog">
+<meta property="og:description" content="S3をCentOSからファイルシステムっぽく使えないだろうか。そんな事を考えつつ色々探していてたらs3fsというのを見つけました。 やったこと FUSEをインストール s3fsのコンパイルに必要なパッケージをyumでインストール s3fsをインストール S3にバケットを作成 IAMでs3用のユーザー作成 S3のバケットをマウント  事前に必要なものgit,make,gcc-c++が必要なので、事前">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://blog.ogatomo.com/blog/images/2013-02-23-how-to-install-s3fs-in-centos5-s3_1.png">
+<meta property="og:image" content="http://blog.ogatomo.com/blog/images/2013-02-23-how-to-install-s3fs-in-centos5-s3_2.png">
+<meta property="og:image" content="http://blog.ogatomo.com/blog/images/2013-02-23-how-to-install-s3fs-in-centos5-s3_3.png">
+<meta property="og:image" content="http://blog.ogatomo.com/blog/images/2013-02-23-how-to-install-s3fs-in-centos5-iam1.png">
+<meta property="og:image" content="http://blog.ogatomo.com/blog/images/2013-02-23-how-to-install-s3fs-in-centos5-iam2.png">
+<meta property="og:image" content="http://blog.ogatomo.com/blog/images/2013-02-23-how-to-install-s3fs-in-centos5-iam3.png">
+<meta property="og:image" content="http://blog.ogatomo.com/blog/images/2013-02-23-how-to-install-s3fs-in-centos5-iam4.png">
+<meta property="og:image" content="http://blog.ogatomo.com/blog/images/2013-02-23-how-to-install-s3fs-in-centos5-iam5.png">
+<meta property="og:image" content="http://blog.ogatomo.com/blog/images/2013-02-23-how-to-install-s3fs-in-centos5-iam6.png">
+<meta property="og:updated_time" content="2018-05-10T01:34:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CentOS5.8にs3fsをインストールする方法">
+<meta name="twitter:description" content="S3をCentOSからファイルシステムっぽく使えないだろうか。そんな事を考えつつ色々探していてたらs3fsというのを見つけました。 やったこと FUSEをインストール s3fsのコンパイルに必要なパッケージをyumでインストール s3fsをインストール S3にバケットを作成 IAMでs3用のユーザー作成 S3のバケットをマウント  事前に必要なものgit,make,gcc-c++が必要なので、事前">
+<meta name="twitter:image" content="http://blog.ogatomo.com/blog/images/2013-02-23-how-to-install-s3fs-in-centos5-s3_1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Ogalog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Ogalog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.ogatomo.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-how-to-install-s3fs-in-centos5" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2013/02/23/how-to-install-s3fs-in-centos5/" class="article-date">
+  <time datetime="2013-02-23T07:39:00.000Z" itemprop="datePublished">2013-02-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/aws/">aws</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      CentOS5.8にs3fsをインストールする方法
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>S3をCentOSからファイルシステムっぽく使えないだろうか。<br><br>そんな事を考えつつ色々探していてたら<br><br>s3fsというのを見つけました。</p>
+<h4 id="やったこと"><a href="#やったこと" class="headerlink" title="やったこと"></a>やったこと</h4><ul>
+<li>FUSEをインストール</li>
+<li>s3fsのコンパイルに必要なパッケージをyumでインストール</li>
+<li>s3fsをインストール</li>
+<li>S3にバケットを作成</li>
+<li>IAMでs3用のユーザー作成</li>
+<li>S3のバケットをマウント</li>
+</ul>
+<h4 id="事前に必要なもの"><a href="#事前に必要なもの" class="headerlink" title="事前に必要なもの"></a>事前に必要なもの</h4><p>git,make,gcc-c++が必要なので、<br><br>事前にインストールしておく必要があります。</p>
+<a id="more"></a>
+<h3 id="FUSEのインストール"><a href="#FUSEのインストール" class="headerlink" title="FUSEのインストール"></a>FUSEのインストール</h3><p>CentOSのyumリポジトリのFUSEはバージョンが古いらしく、<br><br>yumからインストールした場合、s3fsのコンパイルに失敗してしまいます。</p>
+<p>なので、最新っぽいソースファイルをダウンロードし、<br><br>コンパイルしてインストールする必要があります。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/src</span><br><span class="line">curl -OL http://downloads.sourceforge.net/project/fuse/fuse-2.X/2.9.2/fuse-2.9.2.tar.gz</span><br><span class="line">tar xvzf fuse-2.9.2.tar.gz</span><br><span class="line">cd fuse-2.9.2</span><br><span class="line">./configure</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<h3 id="s3fsに必要なパッケージインストール"><a href="#s3fsに必要なパッケージインストール" class="headerlink" title="s3fsに必要なパッケージインストール"></a>s3fsに必要なパッケージインストール</h3><p>s3fsのインストールに必要なパッケージを幾つかインストールします。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install curl-devel libxml2-devel openssl-devel</span><br></pre></td></tr></table></figure>
+<h3 id="s3fsをインストール"><a href="#s3fsをインストール" class="headerlink" title="s3fsをインストール"></a>s3fsをインストール</h3><p>gitでソースファイルを取得し、s3fsをインストールします。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/src</span><br><span class="line">git clone git://github.com/memorycraft/s3fs-cloudpack.git</span><br><span class="line">cd s3fs-cloudpack</span><br><span class="line">./configure</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<h3 id="S3にバケットを作成"><a href="#S3にバケットを作成" class="headerlink" title="S3にバケットを作成"></a>S3にバケットを作成</h3><p>S3にバケットを作らないと何も始まらないので、<br><br>Management Consoleからバケットを作成します。</p>
+<img src="/blog/images/2013-02-23-how-to-install-s3fs-in-centos5-s3_1.png">
+<p>「Create Bucket」をクリックし、バケットを作成します。</p>
+<img src="/blog/images/2013-02-23-how-to-install-s3fs-in-centos5-s3_2.png">
+<p>バケット名とリージョンを入力し、「Create」をクリックします。<br><br>同じバケット名のバケットを、他のユーザーが既に作成していた場合はエラーになります。</p>
+<img src="/blog/images/2013-02-23-how-to-install-s3fs-in-centos5-s3_3.png">
+<p>MacやLinuxなどのPCからファイルをアップロードする場合は、<br><br>s3cmdを使うと便利です。</p>
+<h3 id="IAMでs3用のユーザー作成"><a href="#IAMでs3用のユーザー作成" class="headerlink" title="IAMでs3用のユーザー作成"></a>IAMでs3用のユーザー作成</h3><p><a href="http://aws.amazon.com/jp/iam/" target="_blank" rel="noopener">IAM</a>をManagement Consoleで開き、<br>S3にアクセスするためのユーザーを作成します。</p>
+<img src="/blog/images/2013-02-23-how-to-install-s3fs-in-centos5-iam1.png">
+<p>「Create New User」をクリックします。</p>
+<img src="/blog/images/2013-02-23-how-to-install-s3fs-in-centos5-iam2.png">
+<p>ユーザー名を入力し、作成を行うと<br><br>Access Key IDとSecret Key IDが作成されます。<br><br>この情報をテキストファイルにコピーしておくなどして保存しておきます。</p>
+<img src="/blog/images/2013-02-23-how-to-install-s3fs-in-centos5-iam3.png">
+<p>ユーザーを作成後、一覧に作成したユーザーが表示されているので、<br><br>チェックボックスにチェックを入れ、選択状態にした後、<br><br>一覧の下のタブから「Permissions」を選択し、<br><br>「Attach User Policy」をクリックします。</p>
+<img src="/blog/images/2013-02-23-how-to-install-s3fs-in-centos5-iam4.png">
+<p>s3への全てのアクセス権限を与えたい場合、<br><br>「Select Policy Template」から「Amazon S3 Full Access」の「Select」をクリックします。<br></p>
+<p>「Policy Generator」や「Custom Policy」を使うと、細かくアクセス権限を指定できます。</p>
+<img src="/blog/images/2013-02-23-how-to-install-s3fs-in-centos5-iam5.png">
+<p>「Apply Policy」をクリックし、アクセス権限の設定を適用します。<br></p>
+<img src="/blog/images/2013-02-23-how-to-install-s3fs-in-centos5-iam6.png">
+<h3 id="s3のバケットをマウント"><a href="#s3のバケットをマウント" class="headerlink" title="s3のバケットをマウント"></a>s3のバケットをマウント</h3><p>S3に作成したバケットを、CentOSからファイルシステムっぽくマウントを行います。<br><br>まずは、/etc/passwd-s3fsファイルを作成します。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;bucket_name:access_key_id:secret_key_id&quot; &gt;&gt; /etc/passwd-s3fs</span><br><span class="line">chmod 600 /etc/passwd-s3fs</span><br></pre></td></tr></table></figure>
+<p>上記のファイルの内容は以下の通りです。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:left">設定する値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">bucket_name</td>
+<td style="text-align:left">作成したバケット名</td>
+</tr>
+<tr>
+<td style="text-align:left">access_key_id</td>
+<td style="text-align:left">IAMで作成したユーザーのAccessKeyID</td>
+</tr>
+<tr>
+<td style="text-align:left">secret_key_id</td>
+<td style="text-align:left">IAMで作成したユーザーのSecretKeyID</td>
+</tr>
+</tbody>
+</table>
+<p>s3fsを使って、マウントを行います。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /mnt/s3</span><br><span class="line">echo &quot;s3fs#backet_name /mnt/s3 fuse allow_other,url=https://s3.amazonaws.com 0 0&quot; &gt;&gt; /etc/fstab</span><br><span class="line">mount -a</span><br></pre></td></tr></table></figure>
+<p>マウント時のオプションの説明は以下の通りです。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">オプション</th>
+<th style="text-align:left">説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">allow_other</td>
+<td style="text-align:left">root以外のユーザーも/mnt/s3に読込・書込が行えます</td>
+</tr>
+<tr>
+<td style="text-align:left">url=<a href="https://s3.amazonaws.com" target="_blank" rel="noopener">https://s3.amazonaws.com</a></td>
+<td style="text-align:left">httpsを使ってS3にアクセスします</td>
+</tr>
+</tbody>
+</table>
+<h3 id="s3fsを使ってみた感想など"><a href="#s3fsを使ってみた感想など" class="headerlink" title="s3fsを使ってみた感想など"></a>s3fsを使ってみた感想など</h3><p>一応、動いているようには見えるのですが、<br><br>自分のMacからs3cmdを使ってファイルを更新した場合、<br><br>s3fsでマウントしたディレクトリからファイルを読むと<br><br>ファイルがちゃんと読めない事があります。</p>
+<p>なので、Macからs3cmdでファイルを更新する度に<br><br>s3fsでマウントしたディレクトリをunmountしてmountしなおすといった作業が必要でした。<br></p>
+<p>S3を<a href="http://aws.clouddesignpattern.org/index.php/CDP:Web_Storage%E3%83%91%E3%82%BF%E3%83%BC%E3%83%B3" target="_blank" rel="noopener">CDNの代わりっぽく</a>運用できるらしいので、<br><br>s3fsを使えばアプリに手を入れずにそういう事できるかなーとか思ってましたが、、、<br><br>もうちょい検証しないといけなさそう。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.ogatomo.com/blog/2013/02/23/how-to-install-s3fs-in-centos5/" data-id="cjgzu7b6x000goezrjyeqoiog" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2013/06/15/yard-mode/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          yard-modeを使ってみた
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2013/02/10/cannnot-compile-ruby-1-9-3/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">rubyの1.9.3-p385のコンパイルが失敗した時のメモ</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/aws/">aws</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/cocoapods/">cocoapods</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/emacs/">emacs</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gitlab/">gitlab</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hiroshima-rb/">hiroshima.rb</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jenkins/">jenkins</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/redmine/">redmine</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ruby/">ruby</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/rubymotion/">rubymotion</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vagrant/">vagrant</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/zabbix/">zabbix</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/05/">May 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/12/">December 2011</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2014/01/12/how-to-install-zabbix-in-ubuntu-13-04-64bit/">Zabbix Server2.2.1をUbuntu13.10にインストールする方法</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2014/01/08/migration-to-el-get/">Emacsのパッケージ管理をel-getに移行しました</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2013/11/02/hiroshima-rb-35-chef/">広島Ruby勉強会#35 - Chefについて話しました</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2013/07/24/development-environment-of-redmine-plugin/">Redmineプラグインの開発環境を作成</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2013/07/18/using-joybox-in-rubymotion/">rubymotionでjoyboxを使ってみた</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 ogatomo<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

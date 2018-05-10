@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Redmineプラグインの開発環境を作成 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="すごい広島#10に参加しました。・・・が、今回はエア参加です。最近、Redmineのプラグインなどを自作してみたくなり、プラグインの開発環境の構築などをやってみました。 開発環境構築までにやったこと Redmineのソースのダウンロード Redmineのセットアップ pluginの雛形作成 pluginの動作確認">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redmineプラグインの開発環境を作成">
+<meta property="og:url" content="http://yoursite.com/2013/07/24/development-environment-of-redmine-plugin/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="すごい広島#10に参加しました。・・・が、今回はエア参加です。最近、Redmineのプラグインなどを自作してみたくなり、プラグインの開発環境の構築などをやってみました。 開発環境構築までにやったこと Redmineのソースのダウンロード Redmineのセットアップ pluginの雛形作成 pluginの動作確認">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/blog/images/2013-07-24-redmine-plugin.png">
+<meta property="og:updated_time" content="2018-05-10T01:35:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redmineプラグインの開発環境を作成">
+<meta name="twitter:description" content="すごい広島#10に参加しました。・・・が、今回はエア参加です。最近、Redmineのプラグインなどを自作してみたくなり、プラグインの開発環境の構築などをやってみました。 開発環境構築までにやったこと Redmineのソースのダウンロード Redmineのセットアップ pluginの雛形作成 pluginの動作確認">
+<meta name="twitter:image" content="http://yoursite.com/blog/images/2013-07-24-redmine-plugin.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-development-environment-of-redmine-plugin" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2013/07/24/development-environment-of-redmine-plugin/" class="article-date">
+  <time datetime="2013-07-24T13:51:00.000Z" itemprop="datePublished">2013-07-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/redmine/">redmine</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Redmineプラグインの開発環境を作成
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://great-h.github.io/events/event-010.html" target="_blank" rel="noopener">すごい広島#10</a>に参加しました。<br>・・・が、今回はエア参加です。<br>最近、Redmineのプラグインなどを自作してみたくなり、<br>プラグインの開発環境の構築などをやってみました。</p>
+<h3 id="開発環境構築までにやったこと"><a href="#開発環境構築までにやったこと" class="headerlink" title="開発環境構築までにやったこと"></a>開発環境構築までにやったこと</h3><ul>
+<li>Redmineのソースのダウンロード</li>
+<li>Redmineのセットアップ</li>
+<li>pluginの雛形作成</li>
+<li>pluginの動作確認</li>
+</ul>
+<a id="more"></a>
+<h3 id="Redmineのソースのダウンロード"><a href="#Redmineのソースのダウンロード" class="headerlink" title="Redmineのソースのダウンロード"></a>Redmineのソースのダウンロード</h3><p>いつの間にかgithub上にもプロジェクトが作られていました。<br>せっかくなので、githubからcloneしてきます。  </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span>  https://github.com/redmine/redmine.git</span><br></pre></td></tr></table></figure>
+<h3 id="Redmineのセットアップ"><a href="#Redmineのセットアップ" class="headerlink" title="Redmineのセットアップ"></a>Redmineのセットアップ</h3><p>Redmineのソースコードがclone出来たら、<br>必要なgemのインストールやDBの設定などを行なっていきます。  </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> redmine</span><br><span class="line">$ bundle install</span><br></pre></td></tr></table></figure>
+<p>rmagicのインストールに失敗する場合は、<br>ImageMagickを入れて再度bundle installしましょう。  </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ brew install ImageMagick</span><br><span class="line">$ bundle install</span><br></pre></td></tr></table></figure>
+<p>次に、DBの設定を行います。<br>pluginが動けばいいので、お手軽なsqliteで設定を行います。  </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cp config/database.yml.example config/database.yml</span><br><span class="line">$ vi config/database.yml</span><br></pre></td></tr></table></figure>
+<p>設定ファイルは以下の様に書き換えました。</p>
+<figure class="highlight yaml"><figcaption><span>config/database.yml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">production:</span></span><br><span class="line"><span class="attr">  adapter:</span> <span class="string">sqlite3</span></span><br><span class="line"><span class="attr">  database:</span> <span class="string">db/redmine_prod.sqlite3</span></span><br><span class="line"></span><br><span class="line"><span class="attr">development:</span></span><br><span class="line"><span class="attr">  adapter:</span> <span class="string">sqlite3</span></span><br><span class="line"><span class="attr">  database:</span> <span class="string">db/redmine_dev.sqlite3</span></span><br><span class="line"></span><br><span class="line"><span class="attr">test:</span></span><br><span class="line"><span class="attr">  adapter:</span> <span class="string">sqlite3</span></span><br><span class="line"><span class="attr">  database:</span> <span class="string">db/redmine_test.sqlite3</span></span><br></pre></td></tr></table></figure>
+<p>DBを作ります。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rake db:migrate</span><br></pre></td></tr></table></figure>
+<p>セッション用にトークンを作ります。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rake generate_secret_token</span><br></pre></td></tr></table></figure>
+<p>redmineを起動してみます。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rails s</span><br></pre></td></tr></table></figure>
+<p><a href="http://localhost:3000" target="_blank" rel="noopener">http://localhost:3000</a>にブラウザでアクセスすれば、<br>Redmineのホームが起動するはずです。</p>
+<p>以上でRedmineのセットアップは完了です。</p>
+<h3 id="pluginの雛形作成"><a href="#pluginの雛形作成" class="headerlink" title="pluginの雛形作成"></a>pluginの雛形作成</h3><p>pluginの雛形作成は、<a href="http://www.gogolek.co.uk/blog/2012/09/writing-redmine-2-x-plugins-tutorial/" target="_blank" rel="noopener">ここ</a>を参考にしました。  </p>
+<p>まずは、環境変数を設定します。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">export</span> RAILS_ENV=<span class="string">"production"</span></span><br></pre></td></tr></table></figure>
+<p>exampleというpluginを試しに作ってみます。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rails generate redmine_plugin example</span><br></pre></td></tr></table></figure>
+<p>以下の様に、pluginのファイルが作成されました。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">create  plugins/example/app</span><br><span class="line">create  plugins/example/app/controllers</span><br><span class="line">create  plugins/example/app/helpers</span><br><span class="line">create  plugins/example/app/models</span><br><span class="line">create  plugins/example/app/views</span><br><span class="line">create  plugins/example/db/migrate</span><br><span class="line">create  plugins/example/lib/tasks</span><br><span class="line">create  plugins/example/assets/images</span><br><span class="line">create  plugins/example/assets/javascripts</span><br><span class="line">create  plugins/example/assets/stylesheets</span><br><span class="line">create  plugins/example/config/locales</span><br><span class="line">create  plugins/example/test</span><br><span class="line">create  plugins/example/test/fixtures</span><br><span class="line">create  plugins/example/test/unit</span><br><span class="line">create  plugins/example/test/functional</span><br><span class="line">create  plugins/example/test/integration</span><br><span class="line">create  plugins/example/README.rdoc</span><br><span class="line">create  plugins/example/init.rb</span><br><span class="line">create  plugins/example/config/routes.rb</span><br><span class="line">create  plugins/example/config/locales/en.yml</span><br><span class="line">create  plugins/example/test/test_helper.rb</span><br></pre></td></tr></table></figure>
+<p>pluginの説明などは<code>plugins/example/init.rb</code>に書けば良いようです。<br>作成した直後は以下の内容になってました。  </p>
+<figure class="highlight ruby"><figcaption><span>plugins/example/init.rb</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Redmine::Plugin.register <span class="symbol">:example</span> <span class="keyword">do</span></span><br><span class="line">  name <span class="string">'Example plugin'</span></span><br><span class="line">  author <span class="string">'Author name'</span></span><br><span class="line">  description <span class="string">'This is a plugin for Redmine'</span></span><br><span class="line">  version <span class="string">'0.0.1'</span></span><br><span class="line">  url <span class="string">'http://example.com/path/to/plugin'</span></span><br><span class="line">  author_url <span class="string">'http://example.com/about'</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h3 id="pluginの動作確認"><a href="#pluginの動作確認" class="headerlink" title="pluginの動作確認"></a>pluginの動作確認</h3><p>環境変数がproductionに変わっているはずなので、<br>DBを作り直します。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rake db:migrate</span><br></pre></td></tr></table></figure>
+<p>redmineを停止し、もう一度起動しなおします。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rails s</span><br></pre></td></tr></table></figure>
+<p><a href="http://localhost:3000/login" target="_blank" rel="noopener">http://localhost:3000/login</a>からログインし、<br><a href="http://localhost:3000/admin/plugins" target="_blank" rel="noopener">http://localhost:3000/admin/plugins</a>を確認するとプラグインが表示されるはずです。<br>（変更してなければ、IDとパスワードは両方とも<code>admin</code>です）</p>
+<img src="/blog/images/2013-07-24-redmine-plugin.png">
+<p>とりあえず、次はどうしたらいいのかわからないので、今日はここまで。  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2013/07/24/development-environment-of-redmine-plugin/" data-id="cjgzu7b72000ooezr1j6z5tte" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2013/11/02/hiroshima-rb-35-chef/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          広島Ruby勉強会#35 - Chefについて話しました
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2013/07/18/using-joybox-in-rubymotion/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">rubymotionでjoyboxを使ってみた</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/aws/">aws</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/cocoapods/">cocoapods</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/emacs/">emacs</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gitlab/">gitlab</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hiroshima-rb/">hiroshima.rb</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jenkins/">jenkins</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/redmine/">redmine</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ruby/">ruby</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/rubymotion/">rubymotion</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vagrant/">vagrant</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/zabbix/">zabbix</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/05/">May 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/12/">December 2011</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2014/01/12/how-to-install-zabbix-in-ubuntu-13-04-64bit/">Zabbix Server2.2.1をUbuntu13.10にインストールする方法</a>
+          </li>
+        
+          <li>
+            <a href="/2014/01/08/migration-to-el-get/">Emacsのパッケージ管理をel-getに移行しました</a>
+          </li>
+        
+          <li>
+            <a href="/2013/11/02/hiroshima-rb-35-chef/">広島Ruby勉強会#35 - Chefについて話しました</a>
+          </li>
+        
+          <li>
+            <a href="/2013/07/24/development-environment-of-redmine-plugin/">Redmineプラグインの開発環境を作成</a>
+          </li>
+        
+          <li>
+            <a href="/2013/07/18/using-joybox-in-rubymotion/">rubymotionでjoyboxを使ってみた</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

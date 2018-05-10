@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Gitlabをubuntuにインストールする方法 | Ogalog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="GitlabをUbuntuにインストールしてみました。構成は以下の通りです。    Ubuntu12.04 64bit(Server Edition) Ruby1.9.3-p392 nginx + unicorn gitlab5.0">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gitlabをubuntuにインストールする方法">
+<meta property="og:url" content="http://blog.ogatomo.com/blog/2013/06/26/how-to-install-gitlab-in-ubuntu-12-04-64bit/index.html">
+<meta property="og:site_name" content="Ogalog">
+<meta property="og:description" content="GitlabをUbuntuにインストールしてみました。構成は以下の通りです。    Ubuntu12.04 64bit(Server Edition) Ruby1.9.3-p392 nginx + unicorn gitlab5.0">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-10T01:34:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gitlabをubuntuにインストールする方法">
+<meta name="twitter:description" content="GitlabをUbuntuにインストールしてみました。構成は以下の通りです。    Ubuntu12.04 64bit(Server Edition) Ruby1.9.3-p392 nginx + unicorn gitlab5.0">
+  
+    <link rel="alternate" href="/atom.xml" title="Ogalog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Ogalog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.ogatomo.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-how-to-install-gitlab-in-ubuntu-12-04-64bit" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2013/06/26/how-to-install-gitlab-in-ubuntu-12-04-64bit/" class="article-date">
+  <time datetime="2013-06-26T14:52:00.000Z" itemprop="datePublished">2013-06-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/gitlab/">gitlab</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Gitlabをubuntuにインストールする方法
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>GitlabをUbuntuにインストールしてみました。<br>構成は以下の通りです。  </p>
+<ul>
+<li>Ubuntu12.04 64bit(Server Edition)</li>
+<li>Ruby1.9.3-p392</li>
+<li>nginx + unicorn</li>
+<li>gitlab5.0</li>
+</ul>
+<a id="more"></a>
+<h3 id="最新のgitをインストール"><a href="#最新のgitをインストール" class="headerlink" title="最新のgitをインストール"></a>最新のgitをインストール</h3><p>Gitlabのソース取得や、Gitlab内部の処理でgitが必要になるので、<br>ひとまずgitを最新にしておきます。  </p>
+<p>sources.listファイルを編集し、リポジトリを追加します。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vi /etc/apt/sources.list</span></span><br></pre></td></tr></table></figure></p>
+<p>以下を追記します。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">deb http://ppa.launchpad.net/git-core/ppa/ubuntu precise main</span><br><span class="line">deb-src http://ppa.launchpad.net/git-core/ppa/ubuntu precise main</span><br></pre></td></tr></table></figure></p>
+<p>gitをインストールします。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># apt-get update</span></span><br><span class="line"><span class="comment"># apt-get install git-core</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="rubyのインストール"><a href="#rubyのインストール" class="headerlink" title="rubyのインストール"></a>rubyのインストール</h3><p>rbenvを使ってrubyをインストールします。<br>まずは、rbenvをインストールします。  </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd /usr/local</span></span><br><span class="line"><span class="comment"># git clone git://github.com/sstephenson/rbenv.git rbenv</span></span><br><span class="line"><span class="comment"># mkdir rbenv/shims rbenv/versions</span></span><br><span class="line"><span class="comment"># git clone git://github.com/sstephenson/ruby-build.git ruby-build</span></span><br><span class="line"><span class="comment"># cd ruby-build</span></span><br><span class="line"><span class="comment"># ./install.sh</span></span><br></pre></td></tr></table></figure>
+<p>rbenvが有効となるように、設定ファイル作成します。  </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vi /etc/profile.d/rbenv.sh</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> RBENV_ROOT=<span class="string">"/usr/local/rbenv"</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="string">"/usr/local/rbenv/bin:<span class="variable">$PATH</span>"</span></span><br><span class="line"><span class="built_in">eval</span> <span class="string">"<span class="variable">$(rbenv init -)</span>"</span></span><br></pre></td></tr></table></figure>
+<p>rbenvを手動で有効にします。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># source /etc/profile.d/rbenv.sh</span><br></pre></td></tr></table></figure></p>
+<p>rbenvでインストールできるrubyのバージョンを確認します。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># rbenv install --list</span><br></pre></td></tr></table></figure></p>
+<p>ruby-1.9.3-p392をインストールします。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># apt-get install build-essential libreadline-dev libssl-dev zlib1g-dev</span><br><span class="line"># rbenv install 1.9.3-p392</span><br><span class="line"># rbenv global 1.9.3-p392</span><br></pre></td></tr></table></figure></p>
+<p>gemコマンドで、bundlerを入れておきます。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># gem install bundler</span><br></pre></td></tr></table></figure></p>
+<h3 id="Gitlab用のユーザー作成"><a href="#Gitlab用のユーザー作成" class="headerlink" title="Gitlab用のユーザー作成"></a>Gitlab用のユーザー作成</h3><p>Gitlab用のユーザーを作成します。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># adduser --disabled-login --gecos &apos;GitLab&apos; git</span><br></pre></td></tr></table></figure>
+<p>上記のgitユーザーを使ってGitlabを動かすため、<br>Gitlabのソースファイルや、gitリポジトリは<br>gitユーザーが読み書き可能な設定にする必要があります。  </p>
+<figure class="highlight sh"><figcaption><span>*gitユーザーで実行*</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vi /home/git/.profile</span><br></pre></td></tr></table></figure>
+<p>以下の内容で作成します。（rbenvの設定読込）<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/profile.d/rbenv.sh</span><br></pre></td></tr></table></figure></p>
+<h4 id="Gitlab-shellをインストール"><a href="#Gitlab-shellをインストール" class="headerlink" title="Gitlab-shellをインストール"></a>Gitlab-shellをインストール</h4><p>gitlab-shellのソースファイルを取得します。<br><figure class="highlight sh"><figcaption><span>*gitユーザーで実行*</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/gitlabhq/gitlab-shell.git</span><br></pre></td></tr></table></figure></p>
+<p>設定ファイルを変更します。<br><figure class="highlight sh"><figcaption><span>*gitユーザーで実行*</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> gitlab-shell</span><br><span class="line">$ cp config.yml.example config.yml</span><br><span class="line">$ vi config.yml</span><br></pre></td></tr></table></figure></p>
+<p>自分の環境に合わせて、config.ymlを編集します。<br><figure class="highlight ruby"><figcaption><span>config.yml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># GitLab user. git by default</span></span><br><span class="line"><span class="symbol">user:</span> git</span><br><span class="line"></span><br><span class="line"><span class="comment"># Url to gitlab instance. Used for api calls</span></span><br><span class="line"><span class="symbol">gitlab_url:</span> <span class="string">"http://gitlab.ogatomo.com/"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Repositories path</span></span><br><span class="line"><span class="symbol">repos_path:</span> <span class="string">"/home/git/repos"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># File used as authorized_keys for gitlab user</span></span><br><span class="line"><span class="symbol">auth_file:</span> <span class="string">"/home/git/.ssh/authorized_keys"</span></span><br></pre></td></tr></table></figure></p>
+<p>インストールスクリプトを実行します。<br><figure class="highlight sh"><figcaption><span>*gitユーザーで実行*</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./bin/install</span><br></pre></td></tr></table></figure></p>
+<p>リポジトリ用のディレクトリを作成します。<br><figure class="highlight sh"><figcaption><span>*gitユーザーで実行*</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir /home/git/repos</span><br></pre></td></tr></table></figure></p>
+<h4 id="Gitlab用のデータベース作成"><a href="#Gitlab用のデータベース作成" class="headerlink" title="Gitlab用のデータベース作成"></a>Gitlab用のデータベース作成</h4><p>MySQLサーバーと、GitlabからMySQLを使うために必要なライブラリ類をインストールします。  </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># apt-get install -y mysql-server mysql-client libmysqlclient-dev</span></span><br></pre></td></tr></table></figure>
+<p>データベース作成を作成します。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mysql -u root -p</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; CREATE USER &apos;gitlab&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;gitlab&apos;;</span><br><span class="line">mysql&gt; CREATE DATABASE IF NOT EXISTS `gitlabhq_production` DEFAULT CHARACTER SET `utf8` COLLATE `utf8_unicode_ci`;</span><br><span class="line">mysql&gt; GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER ON `gitlabhq_production`.* TO &apos;gitlab&apos;@&apos;localhost&apos;;</span><br><span class="line">mysql&gt; \q</span><br></pre></td></tr></table></figure>
+<h4 id="Gitlabのインストール"><a href="#Gitlabのインストール" class="headerlink" title="Gitlabのインストール"></a>Gitlabのインストール</h4><p>githubからGitlabのソースコードをgitコマンドで取得します。  </p>
+<figure class="highlight sh"><figcaption><span>*gitユーザーで実行*</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /home/git</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/gitlabhq/gitlabhq.git gitlab</span><br></pre></td></tr></table></figure>
+<p>取得し終わったら、Gitlabの設定ファイルを作成しておきます。  </p>
+<figure class="highlight sh"><figcaption><span>*gitユーザーで実行*</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /home/git/gitlab</span><br><span class="line">$ cp config/unicorn.rb.example config/unicorn.rb</span><br><span class="line">$ cp config/gitlab.yml.example config/gitlab.yml</span><br><span class="line">$ vi config/gitlab.yml</span><br><span class="line">$ diff config/gitlab.yml.example config/gitlab.yml</span><br></pre></td></tr></table></figure>
+<p>メールアドレス(email_from,support_email)とホスト名(host)など、<br>自分の環境に合わせて変更します</p>
+<p>続けて、unicornの設定ファイルと、データベースの接続設定を行います。<br><figure class="highlight sh"><figcaption><span>*gitユーザーで実行*</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ cp config/unicorn.rb.example config/unicorn.rb</span><br><span class="line">$ cp config/database.yml.mysql config/database.yml</span><br><span class="line">$ vi config/database.yml</span><br></pre></td></tr></table></figure></p>
+<p>設定ファイルの準備が出来たら、Gitlabに必要なパッケージをインストールします。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># apt-get install libicu-dev  libxml2-dev libxslt-dev</span></span><br><span class="line"><span class="comment"># gem install charlock_holmes --version '0.6.9'</span></span><br><span class="line"><span class="comment"># apt-get install -y redis-server postfix</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight sh"><figcaption><span>*gitユーザーで実行*</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ bundle install --deployment --without development <span class="built_in">test</span> postgres</span><br><span class="line">$ bundle <span class="built_in">exec</span> rake db:setup RAILS_ENV=production</span><br><span class="line">$ bundle <span class="built_in">exec</span> rake db:seed_fu RAILS_ENV=production</span><br><span class="line">$ bundle <span class="built_in">exec</span> rake gitlab:setup RAILS_ENV=production</span><br></pre></td></tr></table></figure>
+<p>Gitlabが使用する作業ディレクトリを作成します。</p>
+<figure class="highlight sh"><figcaption><span>*gitユーザーで実行*</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir ~/gitlab-satellites</span><br><span class="line">$ mkdir ~/gitlab/pids</span><br></pre></td></tr></table></figure>
+<h4 id="nginxのインストール"><a href="#nginxのインストール" class="headerlink" title="nginxのインストール"></a>nginxのインストール</h4><p>最後に、nginxをインストールします。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># apt-get install nginx</span></span><br><span class="line"><span class="comment"># curl --output /etc/nginx/sites-available/gitlab https://raw.github.com/gitlabhq/gitlab-recipes/master/nginx/gitlab</span></span><br><span class="line"><span class="comment"># ln -s /etc/nginx/sites-available/gitlab /etc/nginx/sites-enabled/gitlab</span></span><br><span class="line"><span class="comment"># service nginx restart</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.ogatomo.com/blog/2013/06/26/how-to-install-gitlab-in-ubuntu-12-04-64bit/" data-id="cjgzu7b71000loezrihua1pgw" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2013/07/18/using-joybox-in-rubymotion/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          rubymotionでjoyboxを使ってみた
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2013/06/20/settinglogic-in-rails/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">railsでsettingslogicを使った時のメモ</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/aws/">aws</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/cocoapods/">cocoapods</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/emacs/">emacs</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gitlab/">gitlab</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hiroshima-rb/">hiroshima.rb</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jenkins/">jenkins</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/redmine/">redmine</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ruby/">ruby</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/rubymotion/">rubymotion</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vagrant/">vagrant</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/zabbix/">zabbix</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/05/">May 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/12/">December 2011</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2014/01/12/how-to-install-zabbix-in-ubuntu-13-04-64bit/">Zabbix Server2.2.1をUbuntu13.10にインストールする方法</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2014/01/08/migration-to-el-get/">Emacsのパッケージ管理をel-getに移行しました</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2013/11/02/hiroshima-rb-35-chef/">広島Ruby勉強会#35 - Chefについて話しました</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2013/07/24/development-environment-of-redmine-plugin/">Redmineプラグインの開発環境を作成</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2013/07/18/using-joybox-in-rubymotion/">rubymotionでjoyboxを使ってみた</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 ogatomo<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

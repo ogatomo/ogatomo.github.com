@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Emacsのパッケージ管理をel-getに移行しました | Ogalog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="すごい広島#34にエア参加しました。Emacsのパッケージをgitsubmoduleで管理していたのですが、あんまりパッケージ管理出来てない事に気づいたのでel-getに移行しました。   やってみたこと el-getのインストール 野良パッケージをel-getに登録 パッケージ毎の初期化用elisp作成 el-get用にgitignore作成">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Emacsのパッケージ管理をel-getに移行しました">
+<meta property="og:url" content="http://blog.ogatomo.com/blog/2014/01/08/migration-to-el-get/index.html">
+<meta property="og:site_name" content="Ogalog">
+<meta property="og:description" content="すごい広島#34にエア参加しました。Emacsのパッケージをgitsubmoduleで管理していたのですが、あんまりパッケージ管理出来てない事に気づいたのでel-getに移行しました。   やってみたこと el-getのインストール 野良パッケージをel-getに登録 パッケージ毎の初期化用elisp作成 el-get用にgitignore作成">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-10T01:36:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Emacsのパッケージ管理をel-getに移行しました">
+<meta name="twitter:description" content="すごい広島#34にエア参加しました。Emacsのパッケージをgitsubmoduleで管理していたのですが、あんまりパッケージ管理出来てない事に気づいたのでel-getに移行しました。   やってみたこと el-getのインストール 野良パッケージをel-getに登録 パッケージ毎の初期化用elisp作成 el-get用にgitignore作成">
+  
+    <link rel="alternate" href="/atom.xml" title="Ogalog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Ogalog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.ogatomo.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-migration-to-el-get" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2014/01/08/migration-to-el-get/" class="article-date">
+  <time datetime="2014-01-08T11:18:00.000Z" itemprop="datePublished">2014-01-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/emacs/">emacs</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Emacsのパッケージ管理をel-getに移行しました
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://great-h.github.io/events/event-034.html" target="_blank" rel="noopener">すごい広島#34</a>にエア参加しました。<br>Emacsのパッケージをgitsubmoduleで管理していたのですが、<br>あんまりパッケージ管理出来てない事に気づいたので<br>el-getに移行しました。  </p>
+<h3 id="やってみたこと"><a href="#やってみたこと" class="headerlink" title="やってみたこと"></a>やってみたこと</h3><ul>
+<li>el-getのインストール</li>
+<li>野良パッケージをel-getに登録</li>
+<li>パッケージ毎の初期化用elisp作成</li>
+<li>el-get用にgitignore作成</li>
+</ul>
+<a id="more"></a>
+<h3 id="el-getのインストール"><a href="#el-getのインストール" class="headerlink" title="el-getのインストール"></a>el-getのインストール</h3><p>el-getのインストールは、公式の方法だと</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(add-to-list &apos;load-path &quot;~/.emacs.d/el-get/el-get&quot;)</span><br><span class="line"></span><br><span class="line">(unless (require &apos;el-get nil &apos;noerror)</span><br><span class="line">  (with-current-buffer</span><br><span class="line">      (url-retrieve-synchronously</span><br><span class="line">       &quot;https://raw.github.com/dimitri/el-get/master/el-get-install.el&quot;)</span><br><span class="line">    (let (el-get-master-branch)</span><br><span class="line">      (goto-char (point-max))</span><br><span class="line">      (eval-print-last-sexp))))</span><br><span class="line"></span><br><span class="line">(el-get &apos;sync)</span><br></pre></td></tr></table></figure>
+<p>というelispをinit.elに書けば良いらしいです。  </p>
+<p>自分の環境だとうまくいかなかったので、<br>el-getとhelmだけgitsubmoduleで管理することにしました。  </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ~/.emacs.d</span><br><span class="line">$ git submodule add https://github.com/dimitri/el-get.git</span><br><span class="line">$ git submodule add https://github.com/emacs-helm/helm.git</span><br></pre></td></tr></table></figure>
+<p>これでひとまずインストールは完了です。<br>自分の環境だと、el-getの初期化処理は以下の様になりました。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(add-to-list &apos;load-path &quot;~/.emacs.d/el-get&quot;)</span><br><span class="line"></span><br><span class="line">(setq el-get-dir &quot;~/.emacs.d/el-get-packages&quot;)</span><br><span class="line">(setq el-get-recipe-path (list &quot;~/.emacs.d/el-get-user-recipes&quot;</span><br><span class="line">                               &quot;~/.emacs.d/el-get/recipes/emacswiki&quot;</span><br><span class="line">                               &quot;~/.emacs.d/el-get/recipes&quot;))</span><br><span class="line">(setq el-get-user-package-directory &quot;~/.emacs.d/el-get-init-files&quot;)</span><br><span class="line"></span><br><span class="line">(require &apos;el-get)</span><br><span class="line"></span><br><span class="line">(el-get &apos;sync)</span><br></pre></td></tr></table></figure>
+<p>setqしている変数ですが、用途は以下の通りです。  </p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">変数名</th>
+<th style="text-align:left">用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">el-get-dir</td>
+<td style="text-align:left">el-getでパッケージをインストールする際のインストール先</td>
+</tr>
+<tr>
+<td style="text-align:left">el-get-recipe-path</td>
+<td style="text-align:left">el-get用のパッケージ定義ファイル置き場</td>
+</tr>
+<tr>
+<td style="text-align:left">el-get-user-package-directory</td>
+<td style="text-align:left">パッケージがrequireされた時に実行される初期化用elisp置き場</td>
+</tr>
+</tbody>
+</table>
+<p>あとは、<code>M-x el-get-install</code>でひたすらパッケージをインストールします。</p>
+<h3 id="野良パッケージをel-getに登録"><a href="#野良パッケージをel-getに登録" class="headerlink" title="野良パッケージをel-getに登録"></a>野良パッケージをel-getに登録</h3><p><code>M-x el-get-install</code>でパッケージをインストールしていくと、<br>リポジトリに登録されていない野良パッケージの存在に気付かされます。  </p>
+<p>el-getに野良パッケージを登録するには、<br><code>el-get-recipe-path</code><br>に設定したディレクトリ配下にレシピファイルを作成します。  </p>
+<p>作成例ですが、yard-mode.el用のレシピファイルと、</p>
+<figure class="highlight plain"><figcaption><span>yard-mode.rcp</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(:name yard-mode</span><br><span class="line">       :type git</span><br><span class="line">       :website &quot;https://github.com/pd/yard-mode.el&quot;</span><br><span class="line">       :description &quot;Rudimentary support for fontifying YARD tags and directives in ruby comments.&quot;</span><br><span class="line">       :url &quot;https://github.com/pd/yard-mode.el.git&quot;)</span><br></pre></td></tr></table></figure>
+<p>auto-save-buffers用のレシピファイルです。</p>
+<figure class="highlight plain"><figcaption><span>auto-save-buffers.rcp</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(:name auto-save-buffers</span><br><span class="line">       :type http</span><br><span class="line">       :description &quot;auto-save-buffers&quot;</span><br><span class="line">       :url &quot;http://homepage3.nifty.com/oatu/emacs/archives/auto-save-buffers.el&quot;)</span><br></pre></td></tr></table></figure>
+<p><code>:type</code>で、gitからcloneするか、httpでファイルをそのまま取ってくるかなどの取得方法を指定出来るようです。<br><code>:url</code>はリポジトリやファイルのURLを指定します。  </p>
+<p>上記ファイルを作成すれば、<code>M-x el-get-install</code>でインストール出来るパッケージの候補として選べるようになります。</p>
+<h3 id="パッケージ毎の初期化用elisp作成"><a href="#パッケージ毎の初期化用elisp作成" class="headerlink" title="パッケージ毎の初期化用elisp作成"></a>パッケージ毎の初期化用elisp作成</h3><p>これまで私はinit.elにパッケージ毎の初期化処理を書いていたのですが、<br>el-getでは、<code>el-get-user-package-directory</code>内に<br><code>init-パッケージ名.el</code>という初期化用elispを用意しておくことで<br>パッケージがrequireされたタイミングで上記のelispを実行してくれるようです。</p>
+<p>最終的に、~/.emacs.dのディレクトリ構成は以下の様になりました。</p>
+<figure class="highlight sh"><figcaption><span>~/.emacs.d</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">~/.emacs.d</span><br><span class="line">├── el-get</span><br><span class="line">├── el-get-packages</span><br><span class="line">│   └── （省略）</span><br><span class="line">├── el-get-init-files</span><br><span class="line">│   ├── init-auto-save-buffers.el</span><br><span class="line">│   ├── init-jaspace.el</span><br><span class="line">│   ├── init-magit.el</span><br><span class="line">│   ├── init-php-mode.el</span><br><span class="line">│   ├── init-popwin.el</span><br><span class="line">│   ├── init-rcodetools.el</span><br><span class="line">│   ├── init-ruby-mode-github.el</span><br><span class="line">│   └── init-undo-tree.el</span><br><span class="line">├── el-get-user-recipes</span><br><span class="line">│   ├── auto-save-buffers.rcp</span><br><span class="line">│   ├── cucumber.rcp</span><br><span class="line">│   ├── findr.rcp</span><br><span class="line">│   ├── ruby-mode-github.rcp</span><br><span class="line">│   └── yard-mode.rcp</span><br><span class="line">└── init.el</span><br></pre></td></tr></table></figure>
+<p>init.elが肥大化していたので、require時に実行したい処理は<br><code>init-パッケージ名.el</code>に書くようにすれば、<br>だいぶスッキリするのではないかと思ってます。（まだやってない）</p>
+<h3 id="el-get用にgitignore作成"><a href="#el-get用にgitignore作成" class="headerlink" title="el-get用にgitignore作成"></a>el-get用にgitignore作成</h3><p>el-getを導入後は、elファイルをコンパイルしたelcファイルや、<br><code>M-x el-get-install</code>でインストールしたファイルが<br><code>git status</code>実行時に<code>Untracked files:</code>として表示されるようになりました。  </p>
+<p>これらを非表示とするため、以下の.gitignoreファイルを作成しました。<br><figure class="highlight sh"><figcaption><span>.gitignore</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">*.elc</span><br><span class="line">.loaddefs.el</span><br><span class="line">el-get-packages/</span><br><span class="line">!.status.el</span><br></pre></td></tr></table></figure></p>
+<p>.status.elは、<code>M-x el-get-install</code>を実行すると<code>el-get-packages/</code>内に作成されます。<br>どのパッケージをインストールしたのか、このファイル内に持ってるらしいので<br>gitで管理する場合は、このファイルもリポジトリに入れた方が良い様です。</p>
+<h3 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h3><p>el-getに移行したことで、Emacs起動時に全てのパッケージが勝手にインストールされるようになりました。<br>これで、各PC毎に<code>git submodules update</code>したりせずに済みます。  </p>
+<p>野良パッケージもちゃんとレシピファイル準備すれば<br>el-getの恩恵にあずかることができます。</p>
+<p>autoloadとかの仕組みをちゃんと理解出来てないので、<br><code>init-パッケージ名.el</code>書きながら慣れていきたいところです。</p>
+<p>作成した<code>~/.emacs.d</code>配下のファイル類はgithubで公開してます。<br><a href="https://github.com/ogatomo/emacs/tree/el-get" target="_blank" rel="noopener">https://github.com/ogatomo/emacs/tree/el-get</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.ogatomo.com/blog/2014/01/08/migration-to-el-get/" data-id="cjgzu7b74000soezr98o6o2vh" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2014/01/12/how-to-install-zabbix-in-ubuntu-13-04-64bit/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Zabbix Server2.2.1をUbuntu13.10にインストールする方法
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2013/11/02/hiroshima-rb-35-chef/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">広島Ruby勉強会#35 - Chefについて話しました</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/aws/">aws</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/cocoapods/">cocoapods</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/emacs/">emacs</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gitlab/">gitlab</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hiroshima-rb/">hiroshima.rb</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jenkins/">jenkins</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/redmine/">redmine</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ruby/">ruby</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/rubymotion/">rubymotion</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vagrant/">vagrant</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/zabbix/">zabbix</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/05/">May 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/12/">December 2011</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2014/01/12/how-to-install-zabbix-in-ubuntu-13-04-64bit/">Zabbix Server2.2.1をUbuntu13.10にインストールする方法</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2014/01/08/migration-to-el-get/">Emacsのパッケージ管理をel-getに移行しました</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2013/11/02/hiroshima-rb-35-chef/">広島Ruby勉強会#35 - Chefについて話しました</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2013/07/24/development-environment-of-redmine-plugin/">Redmineプラグインの開発環境を作成</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2013/07/18/using-joybox-in-rubymotion/">rubymotionでjoyboxを使ってみた</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 ogatomo<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
