@@ -2,135 +2,135 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://blog.ogatomo.com/blog/2012/05/21/the-memo-for-ruby-debug-installation/</loc>
+    <loc>http://blog.ogatomo.com/blog/2014/01/12/how-to-install-zabbix-in-ubuntu-13-04-64bit/</loc>
     
-    <lastmod>2018-05-10T01:37:03.000Z</lastmod>
+    <lastmod>2018-05-10T05:18:29.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.ogatomo.com/blog/2014/01/08/migration-to-el-get/</loc>
     
-    <lastmod>2018-05-10T01:36:35.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.ogatomo.com/blog/2014/01/12/how-to-install-zabbix-in-ubuntu-13-04-64bit/</loc>
-    
-    <lastmod>2018-05-10T01:35:41.000Z</lastmod>
+    <lastmod>2018-05-10T05:18:16.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.ogatomo.com/blog/2013/11/02/hiroshima-rb-35-chef/</loc>
     
-    <lastmod>2018-05-10T01:35:30.000Z</lastmod>
+    <lastmod>2018-05-10T05:18:03.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.ogatomo.com/blog/2013/07/24/development-environment-of-redmine-plugin/</loc>
     
-    <lastmod>2018-05-10T01:35:15.000Z</lastmod>
+    <lastmod>2018-05-10T05:17:50.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.ogatomo.com/blog/2013/07/18/using-joybox-in-rubymotion/</loc>
     
-    <lastmod>2018-05-10T01:35:07.000Z</lastmod>
+    <lastmod>2018-05-10T05:17:37.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.ogatomo.com/blog/2013/06/26/how-to-install-gitlab-in-ubuntu-12-04-64bit/</loc>
     
-    <lastmod>2018-05-10T01:34:58.000Z</lastmod>
+    <lastmod>2018-05-10T05:17:19.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.ogatomo.com/blog/2013/06/20/settinglogic-in-rails/</loc>
     
-    <lastmod>2018-05-10T01:34:54.000Z</lastmod>
+    <lastmod>2018-05-10T05:17:04.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.ogatomo.com/blog/2013/06/15/yard-mode/</loc>
     
-    <lastmod>2018-05-10T01:34:48.000Z</lastmod>
+    <lastmod>2018-05-10T05:16:45.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.ogatomo.com/blog/2013/02/23/how-to-install-s3fs-in-centos5/</loc>
     
-    <lastmod>2018-05-10T01:34:41.000Z</lastmod>
+    <lastmod>2018-05-10T05:16:27.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.ogatomo.com/blog/2013/02/10/cannnot-compile-ruby-1-9-3/</loc>
     
-    <lastmod>2018-05-10T01:34:34.000Z</lastmod>
+    <lastmod>2018-05-10T05:12:16.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.ogatomo.com/blog/2013/01/10/how-to-use-git-by-account-of-redmine/</loc>
     
-    <lastmod>2018-05-10T01:34:29.000Z</lastmod>
+    <lastmod>2018-05-10T05:12:00.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.ogatomo.com/blog/2013/01/03/the-installation-method-of-redmine/</loc>
     
-    <lastmod>2018-05-10T01:34:21.000Z</lastmod>
+    <lastmod>2018-05-10T05:11:22.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.ogatomo.com/blog/2013/01/02/markdown-mode-was-used/</loc>
     
-    <lastmod>2018-05-10T01:34:16.000Z</lastmod>
+    <lastmod>2018-05-10T05:11:03.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.ogatomo.com/blog/2012/11/09/cocoapods-was-used/</loc>
     
-    <lastmod>2018-05-10T01:34:08.000Z</lastmod>
+    <lastmod>2018-05-10T05:10:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.ogatomo.com/blog/2012/05/21/the-memo-for-ruby-debug-installation/</loc>
+    
+    <lastmod>2018-05-10T05:10:19.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.ogatomo.com/blog/2012/05/17/redmine-pm-setting-memo/</loc>
     
-    <lastmod>2018-05-10T01:33:56.000Z</lastmod>
+    <lastmod>2018-05-10T05:10:01.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.ogatomo.com/blog/2012/05/16/how-to-install-nginx-and-jenkins-in-ubuntu12-04-64bit/</loc>
     
-    <lastmod>2018-05-10T01:33:50.000Z</lastmod>
+    <lastmod>2018-05-10T05:09:47.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.ogatomo.com/blog/2012/01/08/the-installation-of-mortimer-of-a-password-management-tool/</loc>
     
-    <lastmod>2018-05-10T01:33:38.000Z</lastmod>
+    <lastmod>2018-05-10T05:09:29.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.ogatomo.com/blog/2011/12/29/capistrano-was-used/</loc>
     
-    <lastmod>2018-05-10T01:33:28.000Z</lastmod>
+    <lastmod>2018-05-10T05:07:33.000Z</lastmod>
     
   </url>
   
